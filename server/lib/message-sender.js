@@ -350,12 +350,16 @@ class MessageSender {
                 subject = tools.formatCampaignTemplate(this.subject, this.tagLanguage, mergeTags, false, campaign, list, subscriptionGrouped);
             }
 
-            headers = {
-                'List-ID': {
-                    prepared: true,
-                    value: libmime.encodeWords(list.name) + ' <' + list.cid + '.' + getPublicUrl() + '>'
-                }
-            };
+            if (!list.listunsubscribe_disabled) {       
+                headers = {
+                    'List-ID': {
+                        prepared: true,
+                        value: libmime.encodeWords(list.name) + ' <' + list.cid + '.' + getPublicUrl() + '>'
+                    }
+                };
+            } else {
+                headers = {};
+            }
 
             if (campaign) {
                 const campaignAddress = [campaign.cid, list.cid, subscriptionGrouped.cid].join('.');
