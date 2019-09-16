@@ -374,19 +374,20 @@ class MessageSender {
                 if (this.useVerpSenderHeader) {
                     sender = campaignAddress + '@' + sendConfiguration.verp_hostname;
                 }
-
-                headers['x-fbl'] = campaignAddress;
-                headers['x-msys-api'] = JSON.stringify({
-                    campaign_id: campaignAddress
-                });
-                headers['x-smtpapi'] = JSON.stringify({
-                    unique_args: {
+                if (!list.listunsubscribe_disabled) {
+                    headers['x-fbl'] = campaignAddress;
+                    headers['x-msys-api'] = JSON.stringify({
                         campaign_id: campaignAddress
-                    }
-                });
-                headers['x-mailgun-variables'] = JSON.stringify({
-                    campaign_id: campaignAddress
-                });
+                    });
+                    headers['x-smtpapi'] = JSON.stringify({
+                        unique_args: {
+                            campaign_id: campaignAddress
+                        }
+                    });
+                    headers['x-mailgun-variables'] = JSON.stringify({
+                        campaign_id: campaignAddress
+                    });
+                }
             }
 
             listHeader = {
