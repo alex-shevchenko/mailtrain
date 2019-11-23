@@ -594,6 +594,17 @@ function purgeSensitiveData(subscription, groupedFieldsMap) {
     }
 }
 
+async function _blacklist(tx, email) {
+    try {
+        await tx('blacklist').insert({email});
+    } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY') {
+        } else {
+            throw err;
+        }
+    }
+}
+
 async function _update(tx, listId, groupedFieldsMap, existing, filteredEntity) {
     if ('status' in filteredEntity) {
         if (existing.status !== filteredEntity.status) {
@@ -601,6 +612,9 @@ async function _update(tx, listId, groupedFieldsMap, existing, filteredEntity) {
         }
     }
 
+    if (filteredEntity.status === SubscriptionStatus.UNSUBSCRIBED || filteredEntity.status === SubscriptionStatus.COMPLAINED || filteredEntity.status === SubscriptionStatus.BOUNCED) {
+        await _blacklist(tx, existing.email);
+    }
     if (filteredEntity.status === SubscriptionStatus.UNSUBSCRIBED || filteredEntity.status === SubscriptionStatus.COMPLAINED) {
         if (existing.unsubscribed === null) {
             filteredEntity.unsubscribed = new Date();
