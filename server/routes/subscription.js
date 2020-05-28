@@ -6,6 +6,7 @@ const router = require('../lib/router-async').create();
 const confirmations = require('../models/confirmations');
 const subscriptions = require('../models/subscriptions');
 const lists = require('../models/lists');
+const sendConfigurations = require('../models/send-configurations');
 const fields = require('../models/fields');
 const shares = require('../models/shares');
 const settings = require('../models/settings');
@@ -494,6 +495,7 @@ router.postAsync('/:lcid/manage-address', passport.parseForm, passport.csrfProte
 
 router.getAsync('/:lcid/unsubscribe/:ucid', passport.csrfProtection, async (req, res) => {
     const list = await lists.getByCid(contextHelpers.getAdminContext(), req.params.lcid);
+    const sendConfig = await sendConfigurations.getByCid(contextHelpers.getAdminContext(), list.send_configuration);
 
     const configItems = await settings.get(contextHelpers.getAdminContext(), ['defaultAddress']);
 
@@ -516,7 +518,7 @@ router.getAsync('/:lcid/unsubscribe/:ucid', passport.csrfProtection, async (req,
         data.email = subscription.email;
         data.lcid = req.params.lcid;
         data.ucid = req.params.ucid;
-        data.title = "Отписка";
+        data.title = sendConfig.name;
         data.csrfToken = req.csrfToken();
         data.campaign = req.query.c;
         data.defaultAddress = configItems.defaultAddress;
