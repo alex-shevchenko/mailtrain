@@ -663,11 +663,12 @@ router.postAsync('/publickey', passport.parseForm, async (req, res) => {
 
 async function webNotice(type, req, res) {
     const list = await lists.getByCid(contextHelpers.getAdminContext(), req.params.cid);
+    const sendConfig = await sendConfigurations.getByCid(contextHelpers.getAdminContext(), list.send_configuration);
 
     const configItems = await settings.get(contextHelpers.getAdminContext(), ['defaultHomepage', 'adminEmail']);
 
     const data = {
-        title: list.name,
+        title: sendConfig.name,
         homepage: list.homepage || configItems.defaultHomepage || getTrustedUrl(),
         contactAddress: list.contact_email || configItems.adminEmail,
         template: {
