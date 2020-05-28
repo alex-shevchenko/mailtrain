@@ -495,7 +495,7 @@ router.postAsync('/:lcid/manage-address', passport.parseForm, passport.csrfProte
 
 router.getAsync('/:lcid/unsubscribe/:ucid', passport.csrfProtection, async (req, res) => {
     const list = await lists.getByCid(contextHelpers.getAdminContext(), req.params.lcid);
-    const sendConfig = await sendConfigurations.getByCid(contextHelpers.getAdminContext(), list.send_configuration);
+    const sendConfig = await sendConfigurations.getById(contextHelpers.getAdminContext(), list.send_configuration, false, false);
 
     const configItems = await settings.get(contextHelpers.getAdminContext(), ['defaultAddress']);
 
@@ -663,7 +663,7 @@ router.postAsync('/publickey', passport.parseForm, async (req, res) => {
 
 async function webNotice(type, req, res) {
     const list = await lists.getByCid(contextHelpers.getAdminContext(), req.params.cid);
-    const sendConfig = await sendConfigurations.getByCid(contextHelpers.getAdminContext(), list.send_configuration);
+    const sendConfig = await sendConfigurations.getById(contextHelpers.getAdminContext(), list.send_configuration, false, false);
 
     const configItems = await settings.get(contextHelpers.getAdminContext(), ['defaultHomepage', 'adminEmail']);
 
