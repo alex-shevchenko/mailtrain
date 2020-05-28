@@ -516,7 +516,7 @@ router.getAsync('/:lcid/unsubscribe/:ucid', passport.csrfProtection, async (req,
         data.email = subscription.email;
         data.lcid = req.params.lcid;
         data.ucid = req.params.ucid;
-        data.title = list.name;
+        data.title = "Отписка";
         data.csrfToken = req.csrfToken();
         data.campaign = req.query.c;
         data.defaultAddress = configItems.defaultAddress;
