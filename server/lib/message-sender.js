@@ -512,7 +512,7 @@ class MessageSender {
             await knex('campaign_messages')
                 .where({id: campaignMessage.id})
                 .update({
-                    status: CampaignMessageStatus.SCHEDULED,
+                    status: 6,
                     updated: new Date()
                 });
 
