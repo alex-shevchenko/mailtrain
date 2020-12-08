@@ -83,11 +83,11 @@ async function _sendMail(transport, mail, template) {
         return await transport.sendMailAsync(mail);
 
     } catch (err) {
-        if ( (err.responseCode && err.responseCode >= 400 && err.responseCode < 500) ||
-            (err.code === 'ECONNECTION' && err.errno === 'ECONNREFUSED')
-        ) {
-            throw new SendConfigurationError(transport.mailer.sendConfiguration.id, 'Cannot connect to service specified by send configuration ' + transport.mailer.sendConfiguration.id);
-        }
+        // if ( (err.responseCode && err.responseCode >= 400 && err.responseCode < 500) ||
+        //     (err.code === 'ECONNECTION' && err.errno === 'ECONNREFUSED')
+        // ) {
+        //     throw new SendConfigurationError(transport.mailer.sendConfiguration.id, 'Cannot connect to service specified by send configuration ' + transport.mailer.sendConfiguration.id);
+        // }
 
         throw err;
     }
